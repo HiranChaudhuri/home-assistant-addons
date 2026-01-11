@@ -1,6 +1,6 @@
 import http from "node:http";
 import { Browser } from "./screenshot.js";
-import { isAddOn, hassUrl, hassToken, keepBrowserOpen } from "./const.js";
+import { isAddOn, hassUrl, hassToken, keepBrowserOpen, port } from "./const.js";
 import { CannotOpenPageError } from "./error.js";
 import { handleUIRequest } from "./ui.js";
 import { loadDevicesConfig, getDeviceConfig } from "./devices.js";
@@ -9,7 +9,17 @@ import { loadDevicesConfig, getDeviceConfig } from "./devices.js";
 const MAX_NEXT_REQUESTS = 100;
 const BROWSER_TIMEOUT = 30_000; // Timeout for browser inactivity in milliseconds
 
+/**
+ * This RequestHandler controls a browser to generate screenshots
+ * based on the requests it receives.
+ */
 class RequestHandler {
+
+  /**
+   * Creates a new RequestHandler.
+   * @constructor
+   * @param {browser} the browser to use
+   */
   constructor(browser) {
     this.browser = browser;
     this.busy = false;
@@ -62,6 +72,9 @@ class RequestHandler {
     );
   }
 
+  /**
+   * Handles the incoming requests.
+   */
   async handleRequest(request, response) {
     const requestUrl = new URL(request.url, "http://localhost");
 
@@ -352,9 +365,12 @@ class RequestHandler {
   }
 }
 
+/**
+ * Main entry point.
+ * It configures the browser and sets up the http server.
+ */
 const browser = new Browser(hassUrl, hassToken);
 const requestHandler = new RequestHandler(browser);
-const port = 10000;
 const server = http.createServer((request, response) =>
   requestHandler.handleRequest(request, response),
 );
