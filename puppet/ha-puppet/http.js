@@ -1,6 +1,6 @@
 import http from "node:http";
 import { Browser } from "./screenshot.js";
-import { isAddOn, hassUrl, hassToken, keepBrowserOpen, port } from "./const.js";
+import { isAddOn, hassUrl, hassToken, keepBrowserOpen, port, prefix } from "./const.js";
 import { CannotOpenPageError } from "./error.js";
 import { handleUIRequest } from "./ui.js";
 import { loadDevicesConfig, getDeviceConfig } from "./devices.js";
@@ -18,7 +18,7 @@ class RequestHandler {
   /**
    * Creates a new RequestHandler.
    * @constructor
-   * @param {browser} the browser to use
+   * @param {Browser} browser the browser to use
    */
   constructor(browser) {
     this.browser = browser;
@@ -84,7 +84,8 @@ class RequestHandler {
       return;
     }
 
-    if (requestUrl.pathname === "/") {
+    if (requestUrl.pathname === prefix) {
+      console.debug("UI Request", request.url);
       await handleUIRequest(response);
       return;
     }
