@@ -14,6 +14,7 @@ const __dirname = dirname(__filename);
  */
 async function fetchHomeAssistantData() {
   try {
+    console.debug("Checking home-assistant url ", hassUrl);
     const auth = createLongLivedTokenAuth(hassUrl, hassToken);
     const connection = await createConnection({ auth });
 

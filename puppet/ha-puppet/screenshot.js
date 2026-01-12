@@ -262,6 +262,8 @@ if (isAddOn) {
 
 export class Browser {
   constructor(homeAssistantUrl, token) {
+    console.info("screenshot.js@Browser@constructor ${homeAssistantUrl}, ...");
+    
     this.homeAssistantUrl = homeAssistantUrl;
     this.token = token;
     this.browser = undefined;
@@ -278,6 +280,7 @@ export class Browser {
   }
 
   async cleanup() {
+    console.info("screenshot.js@Browser@cleanup");
     const { browser, page } = this;
 
     if (!this.browser && !this.page) {
@@ -368,6 +371,8 @@ export class Browser {
     theme,
     dark,
   }) {
+    console.info(`screenshot.js@navigatePage ${pagePath}`);
+    
     let start = new Date();
     if (this.busy) {
       throw new Error("Browser is busy");
@@ -566,6 +571,8 @@ export class Browser {
   }
 
   async screenshotPage({ viewport, colors, paletteColors, dithering, invert, zoom, format, rotate }) {
+    console.info("screeshot.js@Browser@screenshotPage");
+    
     let start = new Date();
     if (this.busy) {
       throw new Error("Browser is busy");
