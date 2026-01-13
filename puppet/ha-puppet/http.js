@@ -84,7 +84,7 @@ class RequestHandler {
       return;
     }
 
-    if (requestUrl.pathname === prefix) {
+    if (requestUrl.pathname === prefix || requestUrl.pathname === "/") {
       console.debug("UI Request", request.url);
       await handleUIRequest(response);
       return;
@@ -92,6 +92,7 @@ class RequestHandler {
 
     const requestId = ++this.requestCount;
     console.debug(requestId, "Request", request.url);
+    
 
     const start = new Date();
     if (this.busy) {
@@ -235,9 +236,16 @@ class RequestHandler {
       if (!validDitheringAlgorithms.includes(dithering)) {
         dithering = "none";
       }
+      
+      // strip prefix
+      let pagePath = requestUrl.pathname
+      if (pagePath.startsWith(prefix)) {
+        pagePath = pagePath.replace(prefix, "");
+        console.debug(`stripped path to ${pagePath}`);
+      }
 
       const requestParams = {
-        pagePath: requestUrl.pathname,
+        pagePath: pagePath,
         viewport: { width: viewportParams[0], height: viewportParams[1] },
         extraWait,
         colors,

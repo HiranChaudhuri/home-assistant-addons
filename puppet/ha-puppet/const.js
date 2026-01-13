@@ -31,7 +31,7 @@ export const keepBrowserOpen = options.keep_browser_open || false;
 
 export const port = options.port || 10000;
 
-export const prefix = options.prefix || "/";
+export const prefix = options.prefix || "";
 
 if (!hassToken) {
   console.warn("No access token configured. UI will show configuration instructions.");
