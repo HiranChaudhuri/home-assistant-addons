@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { createConnection, createLongLivedTokenAuth } from "home-assistant-js-websocket";
-import { hassUrl, hassToken, isAddOn } from "./const.js";
+import { hassUrl, hassToken, isAddOn, prefix } from "./const.js";
 import { loadDevicesConfig } from "./devices.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -155,6 +155,7 @@ export async function handleUIRequest(response) {
     const hassScriptTag = `<script>window.hass = ${JSON.stringify(hassData, null, 2)};</script>`;
     const devicesScriptTag = `<script>window.devices = ${JSON.stringify(devicesData, null, 2)};</script>`;
     html = html.replace("</head>", `${hassScriptTag}\n  ${devicesScriptTag}\n  </head>`);
+    html = html.replace("${prefix}", prefix);
 
     response.writeHead(200, {
       "Content-Type": "text/html",

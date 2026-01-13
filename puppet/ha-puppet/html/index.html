@@ -807,7 +807,7 @@
         }
 
         // Keep UI at root path, all settings in query string
-        const newUrl = `${window.location.origin}/?${params.toString()}`;
+        const newUrl = `${window.location.origin}${prefix}/?${params.toString()}`;
 
         // Update browser URL without reloading the page
         window.history.replaceState({}, "", newUrl);
